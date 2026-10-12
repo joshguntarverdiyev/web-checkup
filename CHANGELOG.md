@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3 (2026-10-12)
+
+- Removed `install.sh` and the `curl | bash` one-liner. Install with `npx skills add`, the Claude Code plugin, or a manual `git clone` and copy. Piping a downloaded script into a shell is a pattern the skill itself advises against.
+
 ## 1.0.2 (2026-10-12)
 
 - Security playbook: the env validation example picks each variable explicitly instead of passing the whole environment object.

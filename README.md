@@ -78,14 +78,13 @@ Add `-g` to install for every project, or `-a claude-code` (or `codex`, `cursor`
 /plugin install web-checkup@web-checkup
 ```
 
-**Manual (Claude Code or Codex):**
+**Manual:** download the repository and copy one folder into your agent's skills folder:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/joshguntarverdiyev/web-checkup/main/install.sh | bash
-# options: --agent claude|codex|all   --project (install into ./.claude/skills)   --dir <path>
+git clone --depth 1 https://github.com/joshguntarverdiyev/web-checkup.git
+cp -R web-checkup/skills/web-checkup ~/.claude/skills/    # Claude Code
+cp -R web-checkup/skills/web-checkup ~/.codex/skills/     # Codex
 ```
-
-Or copy `skills/web-checkup` into your agent's skills folder (for example `~/.claude/skills/web-checkup`).
 
 ## Use it
 
@@ -135,7 +134,7 @@ A typical project:
 | --- | --- |
 | `npx skills` | `npx skills update web-checkup` (add `-g` if installed globally) |
 | Claude Code plugin | `/plugin marketplace update web-checkup`, or turn on auto-update in `/plugin` > Marketplaces > web-checkup |
-| `install.sh` | Run the install command again |
+| Manual copy | `git pull` in the downloaded folder, then copy `skills/web-checkup` again |
 
 ## Built-in tools
 
@@ -186,7 +185,7 @@ Web Checkup collects nothing and has no telemetry. The skill is instructions plu
 
 `scan.mjs` and the tests contain credential variable names (for example `NEXT_PUBLIC_..._SERVICE_ROLE_KEY`) and URL patterns because those are what the scanner searches for; the tests build a deliberately insecure fake app in a temporary folder. None of this code reads your real credentials or sends them anywhere. The security reference files contain example code for your own apps, not code the plugin runs.
 
-Only run the scripts against projects and sites you own or are allowed to test. `install.sh` downloads this repository from GitHub; nothing else is fetched.
+Only run the scripts against projects and sites you own or are allowed to test.
 
 ## How it was built
 
