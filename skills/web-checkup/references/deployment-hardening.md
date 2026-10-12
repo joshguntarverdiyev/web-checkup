@@ -1,6 +1,6 @@
 # Deployment Hardening: Headers, TLS, Hosting, Accounts
 
-Use this file for production readiness: security headers, CSP, cookies, hosting configuration, DNS, email authentication, account security and monitoring. Check a live site with `node <skill-dir>/scripts/check-url.mjs https://your-site.com`.
+Use this file for production readiness: security headers, CSP, cookies, hosting configuration, DNS, email authentication, account security and monitoring. To check a live site, run the skill's `check-url.mjs` script with the site's address (see the Scripts section of SKILL.md).
 
 ## Required inputs
 

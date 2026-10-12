@@ -1,8 +1,12 @@
 # Changelog
 
+## 1.0.4 (2026-10-12)
+
+- Wording changes in the changelog and the deployment reference so documentation is not mistaken for install commands. No behavior changes.
+
 ## 1.0.3 (2026-10-12)
 
-- Removed `install.sh` and the `curl | bash` one-liner. Install with `npx skills add`, the Claude Code plugin, or a manual `git clone` and copy. Piping a downloaded script into a shell is a pattern the skill itself advises against.
+- Removed the one-line shell installer and its script. Install with `npx skills add`, the Claude Code plugin, or a manual clone and copy. Running a downloaded script straight away is a pattern the skill itself advises against.
 
 ## 1.0.2 (2026-10-12)
 

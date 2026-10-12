@@ -1,7 +1,7 @@
 {
   "name": "web-checkup",
   "displayName": "Web Checkup",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Design, audit and harden websites so they ship distinctive, secure, fast, accessible and discoverable instead of AI-template generated: UX/UI, responsive, security, performance, SEO, metadata and launch checks.",
   "author": {
     "name": "Joshgun Tarverdiyev",

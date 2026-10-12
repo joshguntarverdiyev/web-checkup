@@ -1,6 +1,6 @@
 {
   "name": "web-checkup",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "description": "Agent skill that makes AI-built websites ready to ship: design, UX, responsive, accessibility, security, performance, SEO.",
   "license": "MIT",
