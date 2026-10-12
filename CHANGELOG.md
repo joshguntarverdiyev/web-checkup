@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.5 (2026-10-12)
+
+- Privacy policy (`PRIVACY.md`), linked from `plugin.json` and the README.
+
 ## 1.0.4 (2026-10-12)
 
 - Wording changes in the changelog and the deployment reference so documentation is not mistaken for install commands. No behavior changes.

@@ -175,7 +175,7 @@ Use it in CI to block risky merges:
 
 ## Privacy and network use
 
-Web Checkup collects nothing and has no telemetry. The skill is instructions plus three local scripts:
+[Privacy policy](PRIVACY.md). Web Checkup collects nothing and has no telemetry. The skill is instructions plus three local scripts:
 
 | Script | Reads | Network |
 | --- | --- | --- |

@@ -4,7 +4,7 @@ description: Design, build, audit, and harden websites and web apps so they ship
 license: MIT
 metadata:
   author: Joshgun Tarverdiyev
-  version: "1.0.4"
+  version: "1.0.5"
   argument-hint: "[build | redesign | audit | design | security | perf | seo | a11y | brand | ship] [path-or-url]"
 ---
 
