@@ -1,0 +1,13 @@
+{
+  "name": "web-checkup",
+  "description": "Design, audit and harden websites so they ship distinctive, secure, fast, accessible and discoverable instead of AI-template generated: UX/UI, responsive, security, performance, SEO, metadata and launch checks.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Joshgun Tarverdiyev",
+    "url": "https://github.com/joshguntarverdiyev"
+  },
+  "homepage": "https://github.com/joshguntarverdiyev/web-checkup",
+  "repository": "https://github.com/joshguntarverdiyev/web-checkup",
+  "license": "MIT",
+  "keywords": ["web", "audit", "frontend-design", "ux", "accessibility", "security", "performance", "core-web-vitals", "seo", "vibe-coding"]
+}

@@ -1,0 +1,8 @@
+interface:
+  display_name: "Web Checkup"
+  short_description: "Design, audit and harden web apps: anti-template design, UX, responsive, a11y, security, performance, SEO."
+  brand_color: "#0F766E"
+  default_prompt: "Use $web-checkup to audit my project and tell me what blocks launch."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,12 @@
+# Changelog
+
+## 1.0.0 (2026-10-12)
+
+First public release.
+
+- One `web-checkup` skill with ten commands: build, redesign, design, audit, security, perf, seo, a11y, brand, ship.
+- 23 focused references covering design direction, an AI-tell catalog, typography, color, layout, motion, components and states, UX and copy, conversion, brand and assets, responsive, WCAG 2.2, performance, security (checklist, stack playbooks, deployment hardening), SEO, AI-search visibility, code quality, privacy, AI product patterns, audit method and a launch gate.
+- `scan.mjs`: zero-dependency static scanner with an AI-template score.
+- `check-url.mjs`: live-site checks with optional PageSpeed Insights field data.
+- `visual-check.mjs`: multi-viewport screenshots and rendered-page checks through Playwright.
+- Claude Code plugin marketplace, `npx skills` support, install script, CI.
