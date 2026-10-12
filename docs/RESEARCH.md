@@ -52,4 +52,5 @@ Kept from the draft: the mode-based routing, the audit traceability ideas (evide
 | vercel/nextjs-subscription-payments | 2 false positives found (error strings read as SQL, `.env.local.example` read as a secret) and fixed; remaining findings verified true |
 | shadcn-ui/taxonomy | Font alias parsing and build-time font files fixed; remaining findings verified true |
 | Local misconfigured and hardened servers (check-url) | All planted header, exposure and SEO issues detected; the hardened server produced no high or medium findings |
+| Before/after bakery page (Opus 5.5, same prompt) | Exposed two scanner gaps on plain HTML/CSS (palette matched only exact hex values; label classes counted per definition, not per use) and one visual-check false positive (square +/- buttons read as wrapped labels). All fixed with regression tests; scores moved from 4 to 11 for the template page, 0 for the skill-built page |
 | Local broken and clean pages (visual-check) | Overflow, small targets, wrapping buttons, missing alt, layout shift, invisible focus and console errors detected; the clean page produced none |

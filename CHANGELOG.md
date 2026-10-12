@@ -10,3 +10,5 @@ First public release.
 - `check-url.mjs`: live-site checks with optional PageSpeed Insights field data.
 - `visual-check.mjs`: multi-viewport screenshots and rendered-page checks through Playwright.
 - Claude Code plugin marketplace, `npx skills` support, install script, CI.
+- Before/after example (`examples/bakery`): the same prompt with and without the skill.
+- Scanner detects template palettes by color family (not only exact hex values), counts tracked-uppercase label classes by usage, and flags hand-drawn inline SVG illustrations. `visual-check.mjs` measures real text wrapping for button labels.

@@ -1,0 +1,603 @@
+<!doctype html>
+<!--
+  Crumb & Co. — one-page site.
+  BEFORE LAUNCH, replace every value marked "TODO" (search this file for TODO):
+    - street address, map link, phone / WhatsApp number, email, Instagram handle
+    - opening hours, menu prices, pre-order cut-off
+    - canonical URL + og:url
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crumb &amp; Co. — Neighbourhood Sourdough Bakery in Lisbon</title>
+<meta name="description" content="Crumb & Co. is a small sourdough bakery in Lisbon. Naturally leavened loaves, pastries and good coffee. Pre-order your weekend loaf or drop by.">
+<meta name="theme-color" content="#f6efe4">
+<!-- TODO: set to the live domain -->
+<link rel="canonical" href="https://crumbandco.example/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Crumb &amp; Co. — Sourdough Bakery, Lisbon">
+<meta property="og:description" content="Naturally leavened loaves, pastries and coffee. Pre-order your weekend loaf.">
+<meta property="og:url" content="https://crumbandco.example/">
+<meta property="og:locale" content="en_GB">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cellipse cx='32' cy='36' rx='28' ry='20' fill='%23b8692e'/%3E%3Cpath d='M16 30q8-8 16 0M30 28q8-8 16 0' stroke='%23f6efe4' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Bakery",
+  "name": "Crumb & Co.",
+  "url": "https://crumbandco.example/",
+  "telephone": "+351 000 000 000",
+  "email": "hello@crumbandco.example",
+  "servesCuisine": ["Bakery", "Coffee"],
+  "priceRange": "€",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Rua da Padaria 12",
+    "addressLocality": "Lisboa",
+    "postalCode": "1100-000",
+    "addressCountry": "PT"
+  },
+  "openingHoursSpecification": [
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday","Wednesday","Thursday","Friday"], "opens": "08:00", "closes": "18:00" },
+    { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Saturday","Sunday"], "opens": "08:00", "closes": "14:00" }
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --cream: #f6efe4;
+    --paper: #fbf7f0;
+    --crust: #b8692e;
+    --crust-dark: #8a4a1c;
+    --ink: #2b211a;
+    --muted: #6b5d50;
+    --line: #e4d8c6;
+    --tile: #2f5d7c; /* azulejo blue */
+    --radius: 14px;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 4.5rem; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+  body {
+    margin: 0;
+    font-family: var(--sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--cream);
+    -webkit-font-smoothing: antialiased;
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: var(--crust-dark); }
+  a:hover { color: var(--ink); }
+  :focus-visible { outline: 3px solid var(--tile); outline-offset: 3px; border-radius: 4px; }
+  h1, h2, h3 { font-family: var(--serif); line-height: 1.15; margin: 0 0 .5em; font-weight: 600; }
+  h1 { font-size: clamp(2.4rem, 6vw, 4.2rem); letter-spacing: -.01em; }
+  h2 { font-size: clamp(1.9rem, 4vw, 2.6rem); }
+  h3 { font-size: 1.3rem; }
+  p { margin: 0 0 1em; }
+  .wrap { width: min(1100px, 100% - 2.5rem); margin-inline: auto; }
+  .eyebrow { font-size: .8rem; letter-spacing: .14em; text-transform: uppercase; color: var(--crust-dark); font-weight: 600; margin-bottom: .75rem; }
+  .lead { font-size: 1.2rem; color: var(--muted); max-width: 36rem; }
+  .skip { position: absolute; left: -999px; top: 0; background: var(--ink); color: #fff; padding: .6rem 1rem; z-index: 100; }
+  .skip:focus { left: 1rem; top: 1rem; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    padding: .85rem 1.4rem; border-radius: 999px; font: 600 1rem var(--sans);
+    text-decoration: none; border: 2px solid var(--ink); cursor: pointer;
+    transition: transform .15s ease, background .15s ease, color .15s ease;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-primary { background: var(--ink); color: var(--cream); }
+  .btn-primary:hover { background: var(--crust-dark); border-color: var(--crust-dark); color: #fff; }
+  .btn-ghost { background: transparent; color: var(--ink); }
+  .btn-ghost:hover { background: var(--ink); color: var(--cream); }
+
+  /* Header */
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--cream) 92%, transparent);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: .8rem; }
+  .logo { font-family: var(--serif); font-size: 1.45rem; font-weight: 700; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: .5rem; }
+  .logo svg { width: 30px; height: 30px; }
+  .nav { display: flex; align-items: center; gap: 1.5rem; }
+  .nav a:not(.btn) { color: var(--ink); text-decoration: none; font-weight: 500; }
+  .nav a:not(.btn):hover { color: var(--crust-dark); }
+  .nav .btn { padding: .55rem 1.1rem; font-size: .95rem; }
+  @media (max-width: 640px) { .nav a:not(.btn) { display: none; } }
+
+  /* Hero */
+  .hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(3rem, 7vw, 5rem); }
+  .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem; }
+  .hero-note { margin-top: 1.4rem; font-size: .95rem; color: var(--muted); display: flex; align-items: center; gap: .5rem; }
+  .dot { width: .6rem; height: .6rem; border-radius: 50%; background: #9aa39a; flex: none; }
+  .dot.open { background: #3f8f4f; box-shadow: 0 0 0 4px rgba(63,143,79,.18); }
+  .hero-art { position: relative; aspect-ratio: 1; border-radius: 50%; background:
+      radial-gradient(circle at 30% 30%, #fff8ec 0 40%, transparent 41%),
+      var(--paper);
+    border: 1px solid var(--line); display: grid; place-items: center; }
+  .hero-art svg { width: 82%; height: auto; }
+  @media (max-width: 820px) {
+    .hero .wrap { grid-template-columns: 1fr; }
+    .hero-art { max-width: 320px; margin-inline: auto; order: -1; }
+  }
+
+  /* Tile band */
+  .tiles {
+    height: 18px;
+    background:
+      radial-gradient(circle at 50% 50%, var(--tile) 0 3px, transparent 4px) 0 0 / 18px 18px,
+      linear-gradient(45deg, transparent 45%, rgba(47,93,124,.35) 46% 54%, transparent 55%) 0 0 / 18px 18px,
+      #eef3f6;
+    border-block: 1px solid #c9d6df;
+  }
+
+  section { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+  .section-head { max-width: 40rem; margin-bottom: 2.5rem; }
+
+  /* Menu */
+  #menu { background: var(--paper); }
+  .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  @media (max-width: 900px) { .menu-grid { grid-template-columns: 1fr; } }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 1.6rem; }
+  .card h3 { display: flex; align-items: center; gap: .6rem; }
+  .card h3 svg { width: 28px; height: 28px; flex: none; }
+  .card > p { color: var(--muted); font-size: .97rem; }
+  .items { list-style: none; margin: 1rem 0 0; padding: 0; }
+  .items li { display: grid; grid-template-columns: 1fr auto; gap: .25rem 1rem; padding: .75rem 0; border-top: 1px dashed var(--line); }
+  .items strong { font-weight: 600; }
+  .items .price { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .items small { grid-column: 1 / -1; color: var(--muted); font-size: .88rem; line-height: 1.4; }
+  .tag { display: inline-block; font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: #f3e2cf; color: var(--crust-dark); padding: .1rem .45rem; border-radius: 4px; margin-left: .35rem; vertical-align: 2px; }
+  .menu-foot { margin-top: 1.5rem; color: var(--muted); font-size: .92rem; }
+
+  /* About strip */
+  .about .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .about h3 { font-size: 1.15rem; }
+  .about p { color: var(--muted); margin: 0; }
+  .about .num { font-family: var(--serif); font-size: 2.4rem; color: var(--crust); line-height: 1; margin-bottom: .4rem; }
+  @media (max-width: 760px) { .about .wrap { grid-template-columns: 1fr; } }
+
+  /* Pre-order */
+  #preorder { background: var(--ink); color: var(--cream); }
+  #preorder .eyebrow { color: #e9b98c; }
+  #preorder .lead { color: #d8cbbb; }
+  #preorder a { color: #f3c99f; }
+  .po-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 3rem; align-items: start; }
+  @media (max-width: 900px) { .po-grid { grid-template-columns: 1fr; } }
+  .steps { list-style: none; padding: 0; margin: 2rem 0; counter-reset: s; }
+  .steps li { counter-increment: s; position: relative; padding-left: 3rem; margin-bottom: 1.3rem; color: #d8cbbb; }
+  .steps li strong { color: var(--cream); display: block; }
+  .steps li::before { content: counter(s); position: absolute; left: 0; top: 0; width: 2rem; height: 2rem; border-radius: 50%; border: 2px solid #e9b98c; color: #e9b98c; display: grid; place-items: center; font-weight: 700; font-size: .9rem; }
+  .cutoff { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); border-radius: var(--radius); padding: 1rem 1.2rem; font-size: .95rem; color: #d8cbbb; }
+  .cutoff strong { color: var(--cream); }
+
+  form.po { background: var(--paper); color: var(--ink); border-radius: var(--radius); padding: clamp(1.4rem, 4vw, 2.2rem); }
+  form.po h3 { margin-bottom: 1.2rem; }
+  .field { margin-bottom: 1.1rem; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+  label, legend { display: block; font-weight: 600; font-size: .95rem; margin-bottom: .35rem; }
+  .hint { font-weight: 400; color: var(--muted); font-size: .85rem; }
+  input[type=text], input[type=tel], select, textarea {
+    width: 100%; font: inherit; font-size: 1rem; color: var(--ink);
+    background: #fff; border: 1.5px solid #d7c9b5; border-radius: 10px; padding: .7rem .8rem;
+  }
+  textarea { min-height: 4.5rem; resize: vertical; }
+  input:focus, select:focus, textarea:focus { border-color: var(--tile); outline: none; box-shadow: 0 0 0 3px rgba(47,93,124,.2); }
+  fieldset { border: 0; padding: 0; margin: 0 0 1.1rem; }
+  .loaf-list { border: 1.5px solid #d7c9b5; border-radius: 10px; background: #fff; }
+  .loaf { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .7rem .9rem; }
+  .loaf + .loaf { border-top: 1px solid var(--line); }
+  .loaf label { margin: 0; font-weight: 500; }
+  .loaf label span { color: var(--muted); font-weight: 400; font-size: .9rem; }
+  .qty { display: flex; align-items: center; gap: .25rem; }
+  .qty button { width: 2.2rem; height: 2.2rem; border-radius: 50%; border: 1.5px solid #d7c9b5; background: var(--paper); font: 600 1.1rem var(--sans); color: var(--ink); cursor: pointer; line-height: 1; }
+  .qty button:hover { border-color: var(--ink); }
+  .qty input { width: 3rem; text-align: center; padding: .4rem 0; border: 0; font: 600 1rem var(--sans); background: transparent; -moz-appearance: textfield; }
+  .qty input::-webkit-outer-spin-button, .qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .total { display: flex; justify-content: space-between; font-weight: 600; margin: .2rem 0 1.2rem; padding: 0 .2rem; }
+  .form-actions { display: flex; flex-wrap: wrap; gap: .7rem; }
+  .form-actions .btn { flex: 1 1 12rem; }
+  .btn-wa { background: #1f7a4d; border-color: #1f7a4d; color: #fff; }
+  .btn-wa:hover { background: #155c39; border-color: #155c39; color: #fff; }
+  .form-msg { margin-top: 1rem; font-size: .95rem; min-height: 1.4em; }
+  .form-msg.error { color: #a12a1a; }
+  .form-msg.ok { color: #1f6a3f; }
+  .small { font-size: .85rem; color: var(--muted); margin-top: .8rem; margin-bottom: 0; }
+
+  /* Visit */
+  .visit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  @media (max-width: 820px) { .visit-grid { grid-template-columns: 1fr; } }
+  .hours { width: 100%; border-collapse: collapse; }
+  .hours th, .hours td { text-align: left; padding: .6rem 0; border-bottom: 1px solid var(--line); font-weight: 400; }
+  .hours td { text-align: right; font-variant-numeric: tabular-nums; }
+  .hours tr.today th, .hours tr.today td { font-weight: 700; color: var(--crust-dark); }
+  .contact-list { list-style: none; padding: 0; margin: 0 0 1.5rem; }
+  .contact-list li { padding: .45rem 0; }
+  .contact-list span { display: inline-block; min-width: 6.5rem; color: var(--muted); }
+  address { font-style: normal; font-size: 1.15rem; margin-bottom: 1rem; }
+
+  footer { border-top: 1px solid var(--line); padding: 2rem 0; font-size: .9rem; color: var(--muted); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Crumb &amp; Co. — home">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><ellipse cx="32" cy="36" rx="28" ry="20" fill="#b8692e"/><path d="M16 30q8-8 16 0M30 28q8-8 16 0" stroke="#f6efe4" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
+      Crumb &amp; Co.
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#menu">Menu</a>
+      <a href="#visit">Visit</a>
+      <a class="btn btn-primary" href="#preorder">Pre-order</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Sourdough bakery · Lisbon</p>
+        <h1>Slow bread for the neighbourhood.</h1>
+        <p class="lead">Naturally leavened loaves, pastries straight from the oven and properly good coffee. Baked every morning, a few streets from your door.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#preorder">Pre-order a weekend loaf</a>
+          <a class="btn btn-ghost" href="#visit">Find us</a>
+        </div>
+        <p class="hero-note" id="open-status" aria-live="polite"><span class="dot" aria-hidden="true"></span><span>Open Tue–Sun from 08:00</span></p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 300 220">
+          <ellipse cx="150" cy="190" rx="120" ry="14" fill="#e4d8c6"/>
+          <path d="M30 140 C30 70 90 40 150 40 C210 40 270 70 270 140 C270 175 230 185 150 185 C70 185 30 175 30 140Z" fill="#b8692e"/>
+          <path d="M40 140 C40 80 95 52 150 52 C205 52 260 80 260 140" fill="none" stroke="#9c5522" stroke-width="6" opacity=".5"/>
+          <path d="M85 95 q25 -30 50 0" stroke="#f3dcbc" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <path d="M125 85 q25 -30 50 0" stroke="#f3dcbc" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <path d="M165 95 q25 -30 50 0" stroke="#f3dcbc" stroke-width="9" fill="none" stroke-linecap="round"/>
+          <g fill="#f6efe4" opacity=".55"><circle cx="70" cy="140" r="2.5"/><circle cx="110" cy="155" r="2"/><circle cx="190" cy="150" r="2.5"/><circle cx="230" cy="135" r="2"/><circle cx="150" cy="130" r="2"/></g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <div class="tiles" aria-hidden="true"></div>
+
+  <section id="menu">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What we bake</p>
+        <h2>Bread, pastries &amp; coffee</h2>
+        <p class="lead">A short menu, done carefully. Everything is made in-house from organic Portuguese flour, water, salt and time.</p>
+      </div>
+
+      <!-- TODO: confirm items and prices -->
+      <div class="menu-grid">
+        <article class="card">
+          <h3><svg viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="16" cy="19" rx="14" ry="9" fill="#b8692e"/><path d="M8 16q4-4 8 0M14 15q4-4 8 0" stroke="#f3dcbc" stroke-width="2" fill="none" stroke-linecap="round"/></svg>Sourdough loaves</h3>
+          <p>48-hour fermentation. Crackling crust, open crumb.</p>
+          <ul class="items">
+            <li><strong>Country loaf</strong><span class="price">€5.50</span><small>Our everyday white-wheat sourdough with a touch of rye.</small></li>
+            <li><strong>Seeded rye</strong><span class="price">€6.50</span><small>Dense and nutty — sunflower, pumpkin, flax and sesame.</small></li>
+            <li><strong>Whole wheat</strong><span class="price">€6.00</span><small>100% stone-milled whole wheat, deep and earthy.</small></li>
+            <li><strong>Olive &amp; rosemary</strong><span class="tag">Weekend</span><span class="price">€7.00</span><small>Alentejo olives and fresh rosemary. Weekends only.</small></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 22 Q16 4 28 22 Z" fill="#d9944f"/><path d="M10 20 Q16 10 22 20" stroke="#f3dcbc" stroke-width="2" fill="none"/></svg>Pastries</h3>
+          <p>Laminated and baked each morning. Gone by lunch on weekends.</p>
+          <ul class="items">
+            <li><strong>Butter croissant</strong><span class="price">€2.20</span><small>Sourdough-leavened, all butter.</small></li>
+            <li><strong>Cardamom bun</strong><span class="price">€2.80</span><small>Knotted, sticky, fragrant.</small></li>
+            <li><strong>Pastel de nata</strong><span class="price">€1.40</span><small>Of course. Best warm with cinnamon.</small></li>
+            <li><strong>Seasonal fruit danish</strong><span class="price">€3.00</span><small>Whatever the market has that week.</small></li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 12h16v8a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6z" fill="#6b4226"/><path d="M22 14h2a3 3 0 0 1 0 6h-2" stroke="#6b4226" stroke-width="2" fill="none"/><path d="M11 4q2 3 0 6M16 4q2 3 0 6" stroke="#b8a48f" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>Coffee</h3>
+          <p>Specialty beans from a Lisbon roaster, rotating seasonally.</p>
+          <ul class="items">
+            <li><strong>Bica</strong><span class="price">€1.00</span><small>A proper Lisbon espresso.</small></li>
+            <li><strong>Galão</strong><span class="price">€1.80</span><small>Espresso and lots of warm milk, served in a glass.</small></li>
+            <li><strong>Flat white</strong><span class="price">€2.80</span><small>Oat milk available at no extra cost.</small></li>
+            <li><strong>Filter of the week</strong><span class="price">€3.00</span><small>Ask what we're brewing.</small></li>
+          </ul>
+        </article>
+      </div>
+      <p class="menu-foot">Loaves sell out most days — if you have your heart set on one, <a href="#preorder">pre-order it</a>. Allergen information available at the counter.</p>
+    </div>
+  </section>
+
+  <section class="about" aria-label="How we bake">
+    <div class="wrap">
+      <div><div class="num">48h</div><h3>Long fermentation</h3><p>Slow, cold proving for flavour and bread that's easier to digest.</p></div>
+      <div><div class="num">4</div><h3>Ingredients</h3><p>Flour, water, salt and our starter. No additives, no shortcuts.</p></div>
+      <div><div class="num">0</div><h3>Waste</h3><p>Day-old bread goes to neighbours at half price, then to a local food bank.</p></div>
+    </div>
+  </section>
+
+  <section id="preorder">
+    <div class="wrap po-grid">
+      <div>
+        <p class="eyebrow">Weekend pre-orders</p>
+        <h2>Reserve your weekend loaf</h2>
+        <p class="lead">Weekend bread goes fast. Tell us what you'd like and we'll have it wrapped and waiting.</p>
+        <ol class="steps">
+          <li><strong>Choose your loaves</strong>Pick a pickup day and how many of each.</li>
+          <li><strong>Send your order</strong>It opens WhatsApp or email with your order ready to send.</li>
+          <li><strong>We confirm</strong>We reply to confirm. Pay when you collect — cash, card or MB WAY.</li>
+        </ol>
+        <!-- TODO: confirm cut-off -->
+        <p class="cutoff"><strong>Order by Thursday 18:00</strong> for pickup that Saturday or Sunday, 08:00–14:00. Orders after the cut-off roll over to the following weekend.</p>
+      </div>
+
+      <form class="po" id="po-form" novalidate>
+        <h3>Your order</h3>
+        <div class="row">
+          <div class="field">
+            <label for="po-name">Name</label>
+            <input type="text" id="po-name" name="name" autocomplete="name" required>
+          </div>
+          <div class="field">
+            <label for="po-phone">Phone</label>
+            <input type="tel" id="po-phone" name="phone" autocomplete="tel" inputmode="tel" required placeholder="+351 …">
+          </div>
+        </div>
+        <div class="field">
+          <label for="po-day">Pickup day</label>
+          <select id="po-day" name="day" required></select>
+        </div>
+        <fieldset>
+          <legend>Loaves <span class="hint">— at least one</span></legend>
+          <div class="loaf-list" id="loaf-list"></div>
+        </fieldset>
+        <p class="total" aria-live="polite"><span>Estimated total</span><span id="po-total">€0.00</span></p>
+        <div class="field">
+          <label for="po-notes">Notes <span class="hint">(optional)</span></label>
+          <textarea id="po-notes" name="notes" placeholder="e.g. sliced, or pickup around 10:00"></textarea>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-wa" data-via="whatsapp">Send via WhatsApp</button>
+          <button type="submit" class="btn btn-ghost" data-via="email">Send via email</button>
+        </div>
+        <p class="form-msg" id="po-msg" role="status" aria-live="polite"></p>
+        <p class="small">Your order isn't reserved until we reply to confirm. Prefer to call? <a href="tel:+351000000000">+351 000 000 000</a>.</p>
+      </form>
+    </div>
+  </section>
+
+  <section id="visit">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Visit us</p>
+        <h2>Come say olá</h2>
+      </div>
+      <div class="visit-grid">
+        <div>
+          <!-- TODO: real address + map link -->
+          <address>
+            Rua da Padaria 12<br>
+            1100-000 Lisboa, Portugal
+          </address>
+          <p><a class="btn btn-ghost" href="https://www.google.com/maps/search/?api=1&amp;query=Crumb+%26+Co.+Rua+da+Padaria+12+Lisboa" target="_blank" rel="noopener">Get directions ↗</a></p>
+          <!-- TODO: real contact details -->
+          <ul class="contact-list">
+            <li><span>Phone</span><a href="tel:+351000000000">+351 000 000 000</a></li>
+            <li><span>WhatsApp</span><a href="https://wa.me/351000000000" target="_blank" rel="noopener">Message us</a></li>
+            <li><span>Email</span><a href="mailto:hello@crumbandco.example">hello@crumbandco.example</a></li>
+            <li><span>Instagram</span><a href="https://instagram.com/example" target="_blank" rel="noopener">@example</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Opening hours</h3>
+          <!-- TODO: confirm hours (also update OPEN_HOURS in the script and the JSON-LD above) -->
+          <table class="hours" id="hours">
+            <caption class="skip">Opening hours</caption>
+            <tbody>
+              <tr data-day="1"><th scope="row">Monday</th><td>Closed</td></tr>
+              <tr data-day="2"><th scope="row">Tuesday</th><td>08:00 – 18:00</td></tr>
+              <tr data-day="3"><th scope="row">Wednesday</th><td>08:00 – 18:00</td></tr>
+              <tr data-day="4"><th scope="row">Thursday</th><td>08:00 – 18:00</td></tr>
+              <tr data-day="5"><th scope="row">Friday</th><td>08:00 – 18:00</td></tr>
+              <tr data-day="6"><th scope="row">Saturday</th><td>08:00 – 14:00</td></tr>
+              <tr data-day="0"><th scope="row">Sunday</th><td>08:00 – 14:00</td></tr>
+            </tbody>
+          </table>
+          <p class="small">Holiday hours are posted on Instagram.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year">2026</span> Crumb &amp; Co. · Sourdough bakery, Lisbon</span>
+    <span><a href="#top">Back to top ↑</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // ---- Business config (TODO: keep in sync with the HTML above) ----
+  var WHATSAPP = "351000000000";            // digits only, with country code
+  var EMAIL = "hello@crumbandco.example";
+  var TZ = "Europe/Lisbon";
+  var CUTOFF = { day: 4, hour: 18 };         // Thursday 18:00 Lisbon time
+  // [open, close] in minutes since midnight; null = closed. Index 0 = Sunday.
+  var OPEN_HOURS = [[480, 840], null, [480, 1080], [480, 1080], [480, 1080], [480, 1080], [480, 840]];
+  var LOAVES = [
+    { id: "country", name: "Country loaf", price: 5.5 },
+    { id: "rye", name: "Seeded rye", price: 6.5 },
+    { id: "wholewheat", name: "Whole wheat", price: 6.0 },
+    { id: "olive", name: "Olive & rosemary", price: 7.0 }
+  ];
+  var MAX_PER_LOAF = 10;
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Current date/time in Lisbon, regardless of the visitor's timezone.
+  function lisbonNow() {
+    var parts = {};
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+    }).formatToParts(new Date()).forEach(function (p) { parts[p.type] = p.value; });
+    // A plain Date whose local fields equal Lisbon wall-clock time.
+    return new Date(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute);
+  }
+  var now = lisbonNow();
+
+  // ---- Open/closed status + highlight today ----
+  (function () {
+    var day = now.getDay(), mins = now.getHours() * 60 + now.getMinutes();
+    var row = document.querySelector('#hours tr[data-day="' + day + '"]');
+    if (row) row.classList.add("today");
+
+    var el = document.getElementById("open-status");
+    var dot = el.querySelector(".dot"), text = el.querySelector("span:last-child");
+    var today = OPEN_HOURS[day];
+    function hhmm(m) { return String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0"); }
+    if (today && mins >= today[0] && mins < today[1]) {
+      dot.classList.add("open");
+      text.textContent = "Open now · until " + hhmm(today[1]);
+      return;
+    }
+    if (today && mins < today[0]) { text.textContent = "Closed now · opens today at " + hhmm(today[0]); return; }
+    var names = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    for (var i = 1; i <= 7; i++) {
+      var d = (day + i) % 7;
+      if (OPEN_HOURS[d]) {
+        text.textContent = "Closed now · opens " + (i === 1 ? "tomorrow" : names[d]) + " at " + hhmm(OPEN_HOURS[d][0]);
+        return;
+      }
+    }
+  })();
+
+  // ---- Pickup dates: next weekend still before cut-off ----
+  var daySelect = document.getElementById("po-day");
+  (function () {
+    var thu = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    thu.setDate(thu.getDate() + ((CUTOFF.day - thu.getDay() + 7) % 7));
+    thu.setHours(CUTOFF.hour, 0, 0, 0);
+    // Saturday/Sunday after this Thursday. If we're past the cut-off (incl. Fri–Sun), it's the next one.
+    if (now >= thu) thu.setDate(thu.getDate() + 7);
+    var fmt = new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "long" });
+    var opts = '<option value="">Choose a day…</option>';
+    for (var w = 0; w < 2; w++) {
+      for (var k = 2; k <= 3; k++) {
+        var d = new Date(thu); d.setDate(thu.getDate() + k + w * 7);
+        var label = fmt.format(d);
+        opts += '<option value="' + label + '">' + label + ", 08:00–14:00</option>";
+      }
+    }
+    daySelect.innerHTML = opts;
+  })();
+
+  // ---- Loaf quantity pickers ----
+  var list = document.getElementById("loaf-list");
+  var eur = new Intl.NumberFormat("en-IE", { style: "currency", currency: "EUR" });
+  LOAVES.forEach(function (l) {
+    var row = document.createElement("div");
+    row.className = "loaf";
+    row.innerHTML =
+      '<label for="q-' + l.id + '">' + l.name + ' <span>' + eur.format(l.price) + '</span></label>' +
+      '<div class="qty">' +
+        '<button type="button" data-step="-1" aria-label="Remove one ' + l.name + '">−</button>' +
+        '<input type="number" id="q-' + l.id + '" name="' + l.id + '" min="0" max="' + MAX_PER_LOAF + '" value="0" inputmode="numeric">' +
+        '<button type="button" data-step="1" aria-label="Add one ' + l.name + '">+</button>' +
+      '</div>';
+    list.appendChild(row);
+  });
+
+  function qty(id) {
+    var v = parseInt(document.getElementById("q-" + id).value, 10);
+    return isNaN(v) ? 0 : Math.max(0, Math.min(MAX_PER_LOAF, v));
+  }
+  function updateTotal() {
+    var t = LOAVES.reduce(function (s, l) { return s + qty(l.id) * l.price; }, 0);
+    document.getElementById("po-total").textContent = eur.format(t);
+  }
+  list.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-step]");
+    if (!b) return;
+    var input = b.parentNode.querySelector("input");
+    var v = (parseInt(input.value, 10) || 0) + +b.dataset.step;
+    input.value = Math.max(0, Math.min(MAX_PER_LOAF, v));
+    updateTotal();
+  });
+  list.addEventListener("input", updateTotal);
+  list.addEventListener("change", function (e) {
+    if (e.target.matches("input")) e.target.value = qty(e.target.name);
+    updateTotal();
+  });
+
+  // ---- Submit: compose message and open WhatsApp or email ----
+  var form = document.getElementById("po-form");
+  var msg = document.getElementById("po-msg");
+  var via = "whatsapp";
+  form.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-via]");
+    if (b) via = b.dataset.via;
+  });
+  function fail(text, field) {
+    msg.className = "form-msg error";
+    msg.textContent = text;
+    if (field) field.focus();
+  }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (e.submitter && e.submitter.dataset.via) via = e.submitter.dataset.via;
+    // Note: form.name is the form's own name attribute, so look fields up by id.
+    var nameEl = document.getElementById("po-name"), phoneEl = document.getElementById("po-phone");
+    var name = nameEl.value.trim(), phone = phoneEl.value.trim();
+    var day = daySelect.value, notes = document.getElementById("po-notes").value.trim();
+    if (!name) return fail("Please add your name.", nameEl);
+    if (phone.replace(/\D/g, "").length < 9) return fail("Please add a phone number we can reach you on.", phoneEl);
+    if (!day) return fail("Please choose a pickup day.", daySelect);
+    var lines = LOAVES.filter(function (l) { return qty(l.id) > 0; })
+                      .map(function (l) { return "• " + qty(l.id) + " × " + l.name; });
+    if (!lines.length) return fail("Please add at least one loaf.", document.getElementById("q-" + LOAVES[0].id));
+
+    var body = "Olá Crumb & Co.! I'd like to pre-order:\n\n" + lines.join("\n") +
+      "\n\nPickup: " + day +
+      "\nEstimated total: " + document.getElementById("po-total").textContent +
+      "\nName: " + name + "\nPhone: " + phone +
+      (notes ? "\nNotes: " + notes : "");
+
+    var url = via === "email"
+      ? "mailto:" + EMAIL + "?subject=" + encodeURIComponent("Weekend pre-order — " + name + " (" + day + ")") + "&body=" + encodeURIComponent(body)
+      : "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(body);
+
+    msg.className = "form-msg ok";
+    msg.textContent = via === "email"
+      ? "Opening your email app — just press send. We'll reply to confirm."
+      : "Opening WhatsApp — just press send. We'll reply to confirm.";
+    if (via === "email") window.location.href = url;
+    else window.open(url, "_blank", "noopener");
+  });
+
+  updateTotal();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+Build a one-page website for Crumb & Co., a small neighborhood sourdough bakery in Lisbon. They sell sourdough loaves, pastries and coffee, take pre-orders for weekend loaves, and want locals to visit or pre-order. Create a single self-contained index.html (inline CSS, no frameworks, no build step) in the current directory. Make it ready to launch.

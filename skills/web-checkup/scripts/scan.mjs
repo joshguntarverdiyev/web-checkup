@@ -501,7 +501,7 @@ function tally(key, f, line, sample) {
 }
 
 const DESIGN_RULES = [
-  { key: "purpleGradient", re: /\b(from|via|to|bg|text|shadow)-(purple|violet|indigo|fuchsia)-[1-9]00\b|#(7c3aed|8b5cf6|6366f1|a855f7|9333ea|4f46e5|6d28d9|a78bfa|c084fc)\b/i },
+  { key: "purpleGradient", re: /\b(from|via|to|bg|text|shadow)-(purple|violet|indigo|fuchsia)-[1-9]00\b/i },
   { key: "creamTerracotta", re: /#(f4f1ea|faf7f1|f5f1ea|f7f5f1|fbf8f1|efeae0|ece6db|faf8f5|fdfcfb|f8f6f3|e8dfcb|d97757|c45c48|e07860|d4715f|bf4a37|b6553a|cc785c|b08947|9a2436)\b/i },
   { key: "gradientText", re: /bg-clip-text[^"'`]*text-transparent|text-transparent[^"'`]*bg-clip-text|background-clip\s*:\s*text/ },
   { key: "eyebrow", re: /\buppercase\b[^"'`\n]*\btracking-(wide|wider|widest|\[0?\.\d+em\])|\btracking-(wider|widest|\[0?\.[1-9]\d*em\])[^"'`\n]*\buppercase\b|text-transform\s*:\s*uppercase[^}]*letter-spacing\s*:\s*0?\.(1|2)/ },
@@ -526,6 +526,22 @@ const PLACEHOLDER_IMG = /(picsum\.photos|placehold\.co|placeholder\.com|via\.pla
 const FAKE_STATS = /(99\.9+%|\b10x\b|10,000\+|\b50K\+|\b100K\+|4\.9\/5|\b1M\+ (users|customers))/i;
 const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B50}\u{2728}]/u;
 const DEFAULT_TITLE = /<title>\s*(Vite \+ React|Vite \+ Vue|Vite App|React App|Create Next App|Next\.js App|SvelteKit App|Astro)\s*<\/title>|title\s*:\s*["'](Create Next App|Next\.js App|Vite App)["']/;
+
+// Color families by hue, chroma and lightness, so near-miss hex values still count.
+function hexInfo(hex) {
+  let h = hex.replace("#", "");
+  if (h.length === 3) h = h.split("").map((x) => x + x).join("");
+  const r = parseInt(h.slice(0, 2), 16) / 255, g = parseInt(h.slice(2, 4), 16) / 255, b = parseInt(h.slice(4, 6), 16) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), c = max - min, l = (max + min) / 2;
+  let hue = 0;
+  if (c) hue = max === r ? 60 * (((g - b) / c) % 6) : max === g ? 60 * ((b - r) / c + 2) : 60 * ((r - g) / c + 4);
+  if (hue < 0) hue += 360;
+  return { hue, c, l };
+}
+const isCreamCanvas = ({ hue, c, l }) => l >= 0.88 && c >= 0.035 && c <= 0.2 && hue >= 25 && hue <= 60;
+const isClayAccent = ({ hue, c, l }) => hue >= 10 && hue <= 45 && c >= 0.3 && l >= 0.3 && l <= 0.68;
+const isAiPurple = ({ hue, c, l }) => hue >= 235 && hue <= 290 && c >= 0.3 && l >= 0.3 && l <= 0.78;
+const eyebrowClasses = new Set();
 
 const fontsSeen = new Set();
 const DEFAULT_FONTS = new Set(["inter", "roboto", "poppins", "space grotesk", "dm sans", "plus jakarta sans", "manrope", "open sans", "montserrat", "lato", "geist"]);
@@ -552,6 +568,37 @@ function designChecks() {
       if (/ \u00B7 /.test(l)) tally("middot", f, n, trimmed.slice(0, 100));
       if (DEFAULT_TITLE.test(l)) tally("defaultTitle", f, n, trimmed.slice(0, 100));
     });
+    // color families
+    const seenHex = new Set();
+    for (const hm of text.matchAll(/#([0-9a-f]{6}|[0-9a-f]{3})\b/gi)) {
+      const hex = hm[0].toLowerCase();
+      if (seenHex.has(hex)) continue;
+      seenHex.add(hex);
+      const info = hexInfo(hex);
+      const ln = lineOf(text, hm.index);
+      if (isCreamCanvas(info)) tally("creamCanvas", f, ln, hex);
+      if (isClayAccent(info)) tally("clayAccent", f, ln, hex);
+      if (isAiPurple(info)) tally("purpleHex", f, ln, hex);
+    }
+    // CSS classes styled as tracked uppercase labels (usage is counted after the loop)
+    for (const rm of text.matchAll(/([^{}@;]+)\{([^{}]*)\}/g)) {
+      const body = rm[2];
+      if (!/text-transform\s*:\s*uppercase/i.test(body)) continue;
+      const ls = body.match(/letter-spacing\s*:\s*(-?\d*\.?\d+)(em|rem|px)/i);
+      if (!ls) continue;
+      const v = parseFloat(ls[1]);
+      if ((ls[2] === "px" && v >= 1.2) || (ls[2] !== "px" && v >= 0.08)) {
+        for (const sel of rm[1].split(",")) { const cm = sel.trim().match(/\.([A-Za-z][\w-]*)$/); if (cm) eyebrowClasses.add(cm[1]); }
+      }
+    }
+    // one-off inline SVG illustrations (large canvas, many shapes)
+    if (markupLike) {
+      for (const sm of text.matchAll(/<svg\b[^>]*>[\s\S]*?<\/svg>/g)) {
+        const vb = (sm[0].match(/viewBox=["']\s*[-\d.]+[\s,]+[-\d.]+[\s,]+([\d.]+)[\s,]+([\d.]+)/) || []);
+        const shapes = (sm[0].match(/<(path|circle|ellipse|rect|polygon|polyline|line)\b/g) || []).length;
+        if (vb[1] && Math.min(+vb[1], +vb[2]) >= 120 && shapes >= 6) tally("svgIllustration", f, lineOf(text, sm.index), `viewBox ${vb[1]}x${vb[2]}, ${shapes} shapes`);
+      }
+    }
     // fonts
     let m;
     const nextFont = /import\s*\{([^}]+)\}\s*from\s*["']next\/font\/google["']/g;
@@ -562,6 +609,19 @@ function designChecks() {
     while ((m = gf.exec(text))) for (const fam of m[1].split("&family=")) fontsSeen.add(decodeURIComponent(fam.split(":")[0]).replace(/\+/g, " ").toLowerCase());
     const ff = /font-family\s*:\s*["']?([A-Za-z][A-Za-z0-9 ]+)/g;
     while ((m = ff.exec(text))) { const n = m[1].trim().toLowerCase(); if (!/^(var|inherit|system|ui|sans|serif|mono|-apple|blinkmac|segoe|arial|helvetica)/.test(n)) fontsSeen.add(n); }
+  }
+  if (eyebrowClasses.size) {
+    const names = [...eyebrowClasses];
+    for (const f of uiFiles) {
+      if (!(UI_EXT.has(f.ext) || /\.(t|j)sx$/.test(f.ext))) continue;
+      const text = read(f);
+      if (!text) continue;
+      for (const cm of text.matchAll(/\bclass(?:Name)?\s*=\s*(?:"([^"]*)"|'([^']*)'|\{`([^`]*)`\})/g)) {
+        const classes = (cm[1] || cm[2] || cm[3] || "").split(/\s+/);
+        const hit = names.find((n) => classes.includes(n));
+        if (hit) tally("eyebrow", f, lineOf(text, cm.index), `class "${hit}" (tracked uppercase label)`);
+      }
+    }
   }
   for (const d of Object.keys(deps)) { const fm = d.match(/^@fontsource(?:-variable)?\/(.+)$/); if (fm) fontsSeen.add(fm[1].replace(/-/g, " ")); }
   if (has("geist")) fontsSeen.add("geist");
@@ -577,8 +637,9 @@ function designReport(seoMissingOgImage) {
   const inputs = [];
   const point = (cond, pts, label, key) => { if (cond) inputs.push({ points: pts, label, count: key ? c(key) : undefined, where: key && designTally[key] ? designTally[key].where.slice(0, opts.limit || 50) : [] }); };
   // Tier 1
-  point(c("purpleGradient") >= 2, 3, "AI-purple / violet / indigo palette", "purpleGradient");
-  point(c("creamTerracotta") >= 2, 3, "Cream + terracotta / beige + brass default palette", "creamTerracotta");
+  point(c("purpleGradient") + c("purpleHex") >= 2, 3, "AI-purple / violet / indigo palette", c("purpleGradient") ? "purpleGradient" : "purpleHex");
+  const creamFamily = c("creamCanvas") >= 1 && c("clayAccent") >= 1;
+  point(c("creamTerracotta") >= 2 || creamFamily, 3, "Cream canvas + terracotta / clay / brass accent (the default \"warm\" palette)", creamFamily ? "creamCanvas" : "creamTerracotta");
   point(c("placeholderPeople") >= 1, 3, "Placeholder people, brands or lorem ipsum", "placeholderPeople");
   point(c("defaultTitle") >= 1 || c("defaultAssets") >= 1, 3, "Framework default title or boilerplate assets", c("defaultTitle") ? "defaultTitle" : "defaultAssets");
   point(c("placeholderImg") >= 1, 3, "Placeholder image services", "placeholderImg");
@@ -593,6 +654,7 @@ function designReport(seoMissingOgImage) {
   point(c("copy") >= 3, 2, "Generic transformation copy", "copy");
   point(seoMissingOgImage, 2, "No og:image (blank link previews)");
   point(c("blob") >= 2, 2, "Blurred decorative blobs", "blob");
+  point(c("svgIllustration") >= 1, 2, "Hand-drawn inline SVG illustration (use real imagery, or none)", "svgIllustration");
   // Tier 3
   const fonts = [...fontsSeen];
   const onlyDefaults = fonts.length > 0 && fonts.every((x) => DEFAULT_FONTS.has(x) || DEFAULT_DISPLAY_SERIFS.has(x));

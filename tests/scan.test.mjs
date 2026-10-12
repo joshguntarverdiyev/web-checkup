@@ -183,3 +183,37 @@ test("--only limits areas and bad options fail with exit 1", () => {
   const bad = spawnSync(process.execPath, [SCAN, dir, "--only", "nope"], { encoding: "utf8" });
   assert.equal(bad.status, 1);
 });
+
+test("detects the warm cream template in plain HTML/CSS by color family, eyebrow usage and inline illustration", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "webcheckup-warm-"));
+  const shapes = Array.from({ length: 8 }, (_, i) => `<circle cx="${20 + i * 30}" cy="100" r="12"/>`).join("");
+  write(root, "index.html", `<!doctype html><html lang="en"><head><title>Bakery</title><style>
+:root { --cream: #f5eee2; --clay: #b5652b; --ink: #2a2019; }
+body { background: var(--cream); color: var(--ink); }
+.kicker { font-size: .8rem; letter-spacing: .15em; text-transform: uppercase; color: var(--clay); }
+.tag { letter-spacing: .04em; text-transform: uppercase; }
+</style></head><body>
+<p class="kicker">Our story</p><h1>Slow bread</h1>
+<div class="hero-art"><svg viewBox="0 0 300 220">${shapes}</svg></div>
+<p class="kicker">Menu</p><p class="kicker">Visit</p><span class="tag">New</span>
+</body></html>`);
+  const out = scan(root, ["--only", "design", "--limit", "0"]);
+  const labels = out.designScore.inputs.map((i) => i.label).join(" | ");
+  assert.match(labels, /Cream canvas \+ terracotta/);
+  assert.match(labels, /eyebrow/);
+  assert.match(labels, /inline SVG illustration/);
+  assert.ok(out.designScore.score >= 7, `score ${out.designScore.score}`);
+});
+
+test("a cool, distinctive palette with a small warm accent is not flagged as the cream template", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "webcheckup-cool-"));
+  write(root, "index.html", `<!doctype html><html lang="en"><head><title>Bakery</title><style>
+:root { --paper: #fafaf7; --cobalt: #2348a0; --crust: #9a4f15; --ink: #18222f; }
+.label { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; }
+</style></head><body><p class="label">Hours</p><h1>Sourdough out of the oven</h1></body></html>`);
+  const out = scan(root, ["--only", "design"]);
+  const labels = out.designScore.inputs.map((i) => i.label).join(" | ");
+  assert.doesNotMatch(labels, /Cream canvas/);
+  assert.doesNotMatch(labels, /eyebrow/); // a single use is fine
+  assert.equal(out.designScore.verdict, "Low");
+});

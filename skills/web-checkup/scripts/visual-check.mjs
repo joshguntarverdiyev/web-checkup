@@ -138,10 +138,13 @@ function inspect(touch) {
     if (r.width < min || r.height < min) {
       if (r.width < 24 || r.height < 24 || touch) out.smallTargets.push(`${describe(el)} ${Math.round(r.width)}x${Math.round(r.height)}`);
     }
-    if ((el.tagName === "BUTTON" || el.getAttribute("role") === "button" || /btn|button/i.test(el.className || "")) && (el.innerText || "").trim().length && (el.innerText || "").trim().length < 40) {
-      const lh = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.3;
-      const textH = r.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-      if (textH > lh * 1.8) out.wrappedButtons.push(describe(el));
+    const label = (el.innerText || "").trim();
+    if ((el.tagName === "BUTTON" || el.getAttribute("role") === "button" || /btn|button/i.test(typeof el.className === "string" ? el.className : "")) && label.includes(" ") && label.length < 40) {
+      // Count rendered text lines: distinct line tops of the label's text boxes.
+      const range = document.createRange();
+      range.selectNodeContents(el);
+      const tops = new Set([...range.getClientRects()].filter((q) => q.width > 1 && q.height > 1).map((q) => Math.round(q.top)));
+      if (tops.size > 1) out.wrappedButtons.push(describe(el));
     }
   }
 

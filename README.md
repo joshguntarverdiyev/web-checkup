@@ -8,6 +8,30 @@
 
 Works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot, OpenCode and any agent that supports the open [Agent Skills](https://agentskills.io) format.
 
+## See the difference
+
+Same prompt, same model (Claude Opus 5.5), one run each, nothing cherry-picked: *"Build a one-page website for Crumb & Co., a small neighborhood sourdough bakery in Lisbon... Make it ready to launch."*
+
+![The same bakery page built without and with Web Checkup](docs/images/bakery-desktop.jpg)
+
+Without the skill you get the default "artisan" template: cream canvas, clay accent, tracked uppercase labels, a hand-drawn bread illustration, a stats row. With it, the page is built around the subject (an "oven board" of real bake times, Lisbon azulejo blue), shows its actions immediately on phones, has link previews, and was checked in a real browser before it was handed over.
+
+<details>
+<summary>Mobile comparison and full results</summary>
+
+![The same bakery page on a phone, without and with Web Checkup](docs/images/bakery-mobile.jpg)
+
+| | Without | With Web Checkup |
+| --- | --- | --- |
+| AI-template score | 11 (High) | 0 (Low) |
+| Tap targets under 44 px on a phone | 14 | 0 |
+| Link preview image | Missing | Present |
+| Checked its own rendered output | No | Yes |
+
+Plain Claude already handled structured data, focus styles and reduced motion. Method, both HTML files and full-page screenshots: [examples/bakery](examples/bakery/).
+
+</details>
+
 ## Why
 
 Without guidance, AI assistants produce the statistical average of everything they were trained on:
