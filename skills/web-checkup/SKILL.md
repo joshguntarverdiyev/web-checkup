@@ -4,7 +4,7 @@ description: Design, build, audit, and harden websites and web apps so they ship
 license: MIT
 metadata:
   author: Joshgun Tarverdiyev
-  version: "1.0.0"
+  version: "1.0.1"
   argument-hint: "[build | redesign | audit | design | security | perf | seo | a11y | brand | ship] [path-or-url]"
 ---
 
@@ -135,7 +135,7 @@ Scripts live in this skill's directory (the folder containing this `SKILL.md`). 
 | Script | Use |
 | --- | --- |
 | `node <skill-dir>/scripts/scan.mjs [dir] [--only security,design,seo,a11y,responsive,perf,code] [--json]` | Static signals: leaked secrets, client-exposed env vars, open Supabase or Firebase rules, routes without auth, unsafe sinks, missing metadata and icons, AI-template tells with a score, accessibility, responsive and performance smells, code hygiene |
-| `node <skill-dir>/scripts/check-url.mjs <url> [--psi]` | A deployed site: security headers, HTTPS redirect, cookie flags, exposed `.git`, `.env` and source maps, title, description, canonical, OG image, `robots.txt`, AI crawler access, sitemap, soft 404s, and with `--psi` PageSpeed scores plus real-user Core Web Vitals (set `PSI_API_KEY` if the shared quota is exhausted) |
+| `node <skill-dir>/scripts/check-url.mjs <url> [--psi]` | A deployed site: security headers, HTTPS redirect, cookie flags, exposed `.git`, `.env` and source maps, title, description, canonical, OG image, `robots.txt`, AI crawler access, sitemap, soft 404s, and with `--psi` PageSpeed scores plus real-user Core Web Vitals (if the shared quota is exhausted, ask the user for a key and pass it with `--psi-key`) |
 | `node <skill-dir>/scripts/visual-check.mjs <url> [--pages /pricing,/login] [--dark]` | Full-page screenshots at 375, 768, 1024, 1280 and 1440 px, sideways scroll with the offending elements, small tap targets, wrapping button labels, missing alt text, broken or oversized images, layout shift, invisible keyboard focus, console errors and failed requests |
 
 `visual-check.mjs` finds Playwright in the project, the global npm root or `PLAYWRIGHT_MODULE`. If it is missing, ask before installing it (`npm i -D playwright && npx playwright install chromium`) or fall back to the browser tools available to you. Always open the screenshots and look at them; the checks cover mechanics, not taste.

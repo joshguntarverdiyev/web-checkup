@@ -138,3 +138,23 @@ test("parses PageSpeed Insights lab and field data", async () => {
   assert.ok(!ids.has("cwv.field-inp"), "INP 180 ms is good and must not be flagged");
   assert.equal(out.findings.find((f) => f.id === "cwv.field-lcp").severity, "high");
 });
+
+test("--psi-key is sent only as the PageSpeed key parameter, and no key is read from the environment", async () => {
+  const seen = [];
+  const psi = await new Promise((resolve) => {
+    const s = http.createServer((req, res) => {
+      seen.push(new URL(req.url, "http://x").searchParams.get("key"));
+      res.writeHead(200, { "content-type": "application/json" });
+      res.end(JSON.stringify({ lighthouseResult: { categories: {}, audits: {} } }));
+    });
+    s.listen(0, "127.0.0.1", () => { servers.push(s); resolve(`http://127.0.0.1:${s.address().port}`); });
+  });
+  const site = await serve({ "/": { body: "<!doctype html><html lang=\"en\"><head><title>Key test page</title></head><body><h1>x</h1></body></html>" } });
+  const runWith = (args) => new Promise((resolve) => {
+    const child = spawn(process.execPath, [CHECK, site, "--json", "--timeout", "5000", ...args], { env: { ...process.env, PSI_ENDPOINT: `${psi}/psi`, PSI_API_KEY: "from-env-must-be-ignored" } });
+    child.on("close", resolve);
+  });
+  await runWith(["--psi-key", "abc123"]);
+  await runWith(["--psi"]);
+  assert.deepEqual(seen, ["abc123", null]);
+});

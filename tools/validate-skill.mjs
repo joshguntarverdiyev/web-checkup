@@ -95,6 +95,21 @@ try {
   if (!entry) err("marketplace.json: no plugin entry with source ./");
   else if (entry.name !== plugin.name) err(`marketplace entry name "${entry.name}" differs from plugin.json name "${plugin.name}"`);
   if (!market.owner || !market.owner.name) err("marketplace.json: owner.name is required");
+  // one version everywhere, matching the newest CHANGELOG entry
+  const changelog = fs.readFileSync(path.join(root, "CHANGELOG.md"), "utf8");
+  const latest = (changelog.match(/^##\s+(\d+\.\d+\.\d+)/m) || [])[1];
+  const pkgVersion = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")).version;
+  const skillVersion = (fs.readFileSync(path.join(root, "skills", plugin.name, "SKILL.md"), "utf8").match(/^\s+version:\s*"?([\d.]+)"?/m) || [])[1];
+  if (!plugin.version) err("plugin.json: version is required (users only receive releases when it changes)");
+  for (const [label, v] of [["CHANGELOG.md", latest], ["package.json", pkgVersion], ["SKILL.md metadata", skillVersion]]) {
+    if (v !== plugin.version) err(`version mismatch: plugin.json ${plugin.version} vs ${label} ${v}`);
+  }
+  const icon = path.join(root, ".claude-plugin", "icon.png");
+  if (fs.existsSync(icon)) {
+    const b = fs.readFileSync(icon);
+    const w = b.readUInt32BE(16), h = b.readUInt32BE(20);
+    if (b.toString("ascii", 1, 4) !== "PNG" || w !== h || w < 512 || w > 2048 || b.length > 2 * 1024 * 1024) err(`icon.png must be a square PNG 512-2048 px under 2 MB (got ${w}x${h}, ${b.length} bytes)`);
+  }
 } catch (e) { err(`manifest error: ${e.message}`); }
 
 for (const w of warnings) console.log(`warning: ${w}`);

@@ -28,4 +28,4 @@ If you change a script, add or update a test in `tests/`. Never commit a real se
 
 ## Releases
 
-`plugin.json` intentionally has no `version` field, so Claude Code plugin users receive every commit on `main`. Keep `main` releasable, record user-facing changes in `CHANGELOG.md`, and tag releases (`git tag v1.1.0`).
+Every release bumps the version in `.claude-plugin/plugin.json`, `package.json` and the `SKILL.md` metadata, with a matching `## x.y.z` entry at the top of `CHANGELOG.md`. Plugin users and the Claude directory only receive a release when the version changes. `npm run validate` fails if these disagree. Tag the release (`git tag v1.1.0`).

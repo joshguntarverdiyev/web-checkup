@@ -181,7 +181,7 @@ Web Checkup collects nothing and has no telemetry. The skill is instructions plu
 | Script | Reads | Network |
 | --- | --- | --- |
 | `scan.mjs` | Files in the project you point it at, and `git ls-files`. Secret values are redacted in its output | None. With `--audit` it runs `npm audit`, which sends your dependency list to the npm registry |
-| `check-url.mjs` | Nothing local | Ordinary GET requests (about 15 to 25) to the URL you pass, to check headers, files and tags. With `--psi` it sends that URL to Google's PageSpeed Insights API, and includes `PSI_API_KEY` from your environment if you set it |
+| `check-url.mjs` | Nothing local | Ordinary GET requests (about 15 to 25) to the URL you pass, to check headers, files and tags. With `--psi` it sends that URL to Google's PageSpeed Insights API, plus the API key only if you pass one with `--psi-key` |
 | `visual-check.mjs` | Nothing local besides locating Playwright | Opens the URL you pass in a local headless browser, which loads that page and its resources |
 
 Only run the scripts against projects and sites you own or are allowed to test. `install.sh` downloads this repository from GitHub; nothing else is fetched.

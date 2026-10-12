@@ -10,7 +10,8 @@ Usage:
 
 Options:
   --psi                 Also query Google PageSpeed Insights (lab scores + CrUX field data).
-                        Set PSI_API_KEY for higher rate limits.
+  --psi-key <key>       Optional Google API key for PageSpeed Insights (higher daily quota).
+                        Passed only to the PageSpeed Insights API.
   --strategy <s>        PageSpeed strategy: mobile (default) or desktop
   --json                Print machine-readable JSON
   --strict              Exit with code 2 when any high-severity issue is found
@@ -19,13 +20,14 @@ Options:
 
 Only run this against sites you own or are authorized to test. It sends about 15 to 25 GET requests.`;
 
-const opts = { url: null, psi: false, strategy: "mobile", json: false, strict: false, timeout: 15000 };
+const opts = { url: null, psi: false, psiKey: null, strategy: "mobile", json: false, strict: false, timeout: 15000 };
 {
   const argv = process.argv.slice(2);
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "-h" || a === "--help") { console.log(HELP); process.exit(0); }
     else if (a === "--psi") opts.psi = true;
+    else if (a === "--psi-key") { opts.psiKey = argv[++i]; opts.psi = true; if (!opts.psiKey) fail("--psi-key needs a value"); }
     else if (a === "--json") opts.json = true;
     else if (a === "--strict") opts.strict = true;
     else if (a === "--strategy") opts.strategy = argv[++i];
@@ -390,7 +392,7 @@ function blocksAll(groups, agent) {
 async function pagespeed(url) {
   const params = new URLSearchParams({ url, strategy: opts.strategy });
   for (const c of ["performance", "accessibility", "best-practices", "seo"]) params.append("category", c);
-  if (process.env.PSI_API_KEY) params.set("key", process.env.PSI_API_KEY);
+  if (opts.psiKey) params.set("key", opts.psiKey);
   let data;
   try {
     const endpoint = process.env.PSI_ENDPOINT || "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
@@ -400,7 +402,7 @@ async function pagespeed(url) {
   } catch (e) {
     const quota = /quota|rate/i.test(e.message);
     add("perf", "info", "psi.failed", `PageSpeed Insights request failed: ${e.message.replace(/\.+$/, "")}.`,
-      quota ? "Keyless requests share a small daily quota. Create a free key (Google Cloud console: enable the PageSpeed Insights API, then Credentials > API key) and run with PSI_API_KEY=<key>. Alternatives: https://pagespeed.web.dev or `npx lighthouse <url>`." : "Retry, or use https://pagespeed.web.dev or `npx lighthouse <url>`.");
+      quota ? "Keyless requests share a small daily quota. Create a free key (Google Cloud console: enable the PageSpeed Insights API, then Credentials > API key) and run again with --psi-key <key>. Alternatives: https://pagespeed.web.dev or `npx lighthouse <url>`." : "Retry, or use https://pagespeed.web.dev or `npx lighthouse <url>`.");
     return;
   }
   const lh = data.lighthouseResult || {};
