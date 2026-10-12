@@ -140,6 +140,8 @@ Scripts live in this skill's directory (the folder containing this `SKILL.md`). 
 
 `visual-check.mjs` finds Playwright in the project, the global npm root or `PLAYWRIGHT_MODULE`. If it is missing, ask before installing it (`npm i -D playwright && npx playwright install chromium`) or fall back to the browser tools available to you. Always open the screenshots and look at them; the checks cover mechanics, not taste.
 
+Where scripts cannot run (no Node, no shell, or no network, as in some chat surfaces), do the same checks by reading the code and the references, and say which checks were manual. `check-url.mjs --psi` sends the URL to Google PageSpeed Insights; mention that when you use it.
+
 Exit codes: `0` means the run finished, `1` means bad usage or the target could not be loaded. Pass `--strict` to `scan.mjs` or `check-url.mjs` to exit `2` when high-severity signals exist, for CI use.
 
 ## Output contract

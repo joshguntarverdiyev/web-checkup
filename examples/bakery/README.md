@@ -30,7 +30,20 @@ Plain Claude already gets many technical basics right. The skill's biggest effec
 
 ## Files
 
-- [without-skill/index.html](without-skill/index.html) and its [full-page screenshot](without-skill/full-page.jpg)
-- [with-skill/index.html](with-skill/index.html) and its [full-page screenshot](with-skill/full-page.jpg)
+- [without-skill/index.html](without-skill/index.html)
+- [with-skill/index.html](with-skill/index.html)
+
+<details>
+<summary>Full-page screenshots (desktop, 1440 px)</summary>
+
+Without the skill:
+
+![Full page without the skill](without-skill/full-page.jpg)
+
+With Web Checkup:
+
+![Full page with Web Checkup](with-skill/full-page.jpg)
+
+</details>
 
 To reproduce, run the prompt in an empty folder twice, once with the skill installed and once without, then compare the results with `scan.mjs` and `visual-check.mjs`. Model output varies between runs. Treat this as one honest sample, not a benchmark.

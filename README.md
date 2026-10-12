@@ -174,6 +174,18 @@ Use it in CI to block risky merges:
 - run: node skills/web-checkup/scripts/scan.mjs . --only security --strict
 ```
 
+## Privacy and network use
+
+Web Checkup collects nothing and has no telemetry. The skill is instructions plus three local scripts:
+
+| Script | Reads | Network |
+| --- | --- | --- |
+| `scan.mjs` | Files in the project you point it at, and `git ls-files`. Secret values are redacted in its output | None. With `--audit` it runs `npm audit`, which sends your dependency list to the npm registry |
+| `check-url.mjs` | Nothing local | Ordinary GET requests (about 15 to 25) to the URL you pass, to check headers, files and tags. With `--psi` it sends that URL to Google's PageSpeed Insights API, and includes `PSI_API_KEY` from your environment if you set it |
+| `visual-check.mjs` | Nothing local besides locating Playwright | Opens the URL you pass in a local headless browser, which loads that page and its resources |
+
+Only run the scripts against projects and sites you own or are allowed to test. `install.sh` downloads this repository from GitHub; nothing else is fetched.
+
 ## How it was built
 
 Web Checkup combines the strongest ideas from the most-used skills and guidelines for each area, rewritten into one consistent skill with progressive disclosure, so the agent loads only the references a task needs:
