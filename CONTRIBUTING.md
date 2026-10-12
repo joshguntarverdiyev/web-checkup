@@ -25,3 +25,7 @@ npm run validate    # Agent Skills frontmatter, links and manifests
 ```
 
 If you change a script, add or update a test in `tests/`. Never commit a real secret, even in a fixture: build test secrets at runtime as the existing tests do.
+
+## Releases
+
+`plugin.json` intentionally has no `version` field, so Claude Code plugin users receive every commit on `main`. Keep `main` releasable, record user-facing changes in `CHANGELOG.md`, and tag releases (`git tag v1.1.0`).

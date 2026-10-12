@@ -88,6 +88,31 @@ Or call it directly. In Claude Code, type `/web-checkup` (as a plugin: `/web-che
 | `/web-checkup brand` | Logo, favicon, OG images, icons, imagery |
 | `/web-checkup ship` | Launch gate: Ready, Ready with fixes, or Not ready |
 
+## How it works day to day
+
+**Install once, then forget about it.** You do not type a command every time.
+
+1. **At startup** your agent reads only the skill's short description (about 100 tokens), so it costs almost nothing when you are not using it.
+2. **When your request matches** (building a page, "make this responsive", "is this secure?", "check my SEO", "ready to launch?"), the agent loads Web Checkup by itself and follows it, reading only the reference files that task needs.
+3. **Commands are optional shortcuts** for when you want a specific mode or the agent did not pick it up from a vague request.
+
+A typical project:
+
+| Stage | What you say | What happens |
+| --- | --- | --- |
+| Start a site | "Build a landing page for my bakery" | Design read, concept, real content, all states, SEO and security built in |
+| While building | Normal requests | The quality floor is applied as you go |
+| Before launch | `/web-checkup ship` | Go or no-go with the smallest fix list |
+| After deploying | "Check my live site https://..." | Headers, exposed files, SEO tags, PageSpeed |
+
+## Updating
+
+| Installed with | Update command |
+| --- | --- |
+| `npx skills` | `npx skills update web-checkup` (add `-g` if installed globally) |
+| Claude Code plugin | `/plugin marketplace update web-checkup`, or turn on auto-update in `/plugin` > Marketplaces > web-checkup |
+| `install.sh` | Run the install command again |
+
 ## Built-in tools
 
 Three zero-dependency Node scripts (Node 18+). The agent runs them for evidence, and you can run them yourself.
