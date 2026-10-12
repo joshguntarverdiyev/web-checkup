@@ -104,12 +104,6 @@ try {
   for (const [label, v] of [["CHANGELOG.md", latest], ["package.json", pkgVersion], ["SKILL.md metadata", skillVersion]]) {
     if (v !== plugin.version) err(`version mismatch: plugin.json ${plugin.version} vs ${label} ${v}`);
   }
-  const icon = path.join(root, ".claude-plugin", "icon.png");
-  if (fs.existsSync(icon)) {
-    const b = fs.readFileSync(icon);
-    const w = b.readUInt32BE(16), h = b.readUInt32BE(20);
-    if (b.toString("ascii", 1, 4) !== "PNG" || w !== h || w < 512 || w > 2048 || b.length > 2 * 1024 * 1024) err(`icon.png must be a square PNG 512-2048 px under 2 MB (got ${w}x${h}, ${b.length} bytes)`);
-  }
 } catch (e) { err(`manifest error: ${e.message}`); }
 
 for (const w of warnings) console.log(`warning: ${w}`);

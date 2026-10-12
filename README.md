@@ -184,6 +184,8 @@ Web Checkup collects nothing and has no telemetry. The skill is instructions plu
 | `check-url.mjs` | Nothing local | Ordinary GET requests (about 15 to 25) to the URL you pass, to check headers, files and tags. With `--psi` it sends that URL to Google's PageSpeed Insights API, plus the API key only if you pass one with `--psi-key` |
 | `visual-check.mjs` | Nothing local besides locating Playwright | Opens the URL you pass in a local headless browser, which loads that page and its resources |
 
+`scan.mjs` and the tests contain credential variable names (for example `NEXT_PUBLIC_..._SERVICE_ROLE_KEY`) and URL patterns because those are what the scanner searches for; the tests build a deliberately insecure fake app in a temporary folder. None of this code reads your real credentials or sends them anywhere. The security reference files contain example code for your own apps, not code the plugin runs.
+
 Only run the scripts against projects and sites you own or are allowed to test. `install.sh` downloads this repository from GitHub; nothing else is fetched.
 
 ## How it was built

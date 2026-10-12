@@ -24,12 +24,17 @@ Validate server environment variables at startup so a missing or misplaced key f
 import "server-only";
 import { z } from "zod";
 
-export const env = z.object({
+const schema = z.object({
   DATABASE_URL: z.string().url(),
   STRIPE_SECRET_KEY: z.string().startsWith("sk_"),
   STRIPE_WEBHOOK_SECRET: z.string().startsWith("whsec_"),
   APP_URL: z.string().url(),
-}).parse(process.env);
+});
+
+// Pick each variable explicitly: only what the app declares is read, and nothing else leaks in.
+export const env = schema.parse(Object.fromEntries(
+  Object.keys(schema.shape).map((name) => [name, process.env[name]]),
+));
 ```
 
 `.gitignore` must contain `.env`, `.env.*` and `!.env.example`. Commit an `.env.example` with placeholder values only. If a key was ever committed: rotate it at the provider, then purge history if needed (`git filter-repo`), knowing that forks and clones may keep it.

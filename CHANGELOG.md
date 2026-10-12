@@ -1,11 +1,17 @@
 # Changelog
 
+## 1.0.2 (2026-10-12)
+
+- Security playbook: the env validation example picks each variable explicitly instead of passing the whole environment object.
+- README explains why the scanner and tests contain credential variable names and URL patterns (they are detection patterns and fixtures, never real credentials).
+- Validator no longer reads image files; the directory portal checks the icon.
+
 ## 1.0.1 (2026-10-12)
 
 Ready for Anthropic's plugin directory.
 
 - `check-url.mjs` no longer reads an API key from the environment. Pass an optional PageSpeed Insights key with `--psi-key`.
-- Plugin icon (`.claude-plugin/icon.png`), `displayName` and `version` in `plugin.json`.
+- A plugin icon for directory listings, plus `displayName` and `version` in `plugin.json`.
 - README section on privacy and network use; the skill falls back to manual checks where scripts cannot run.
 
 ## 1.0.0 (2026-10-12)
