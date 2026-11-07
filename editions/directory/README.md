@@ -29,7 +29,10 @@ Or call it directly with `/web-checkup:web-checkup`:
 
 ## Privacy
 
-[Privacy policy](PRIVACY.md). Web Checkup collects nothing and has no telemetry.
+[Privacy policy](PRIVACY.md). Web Checkup collects nothing and has no telemetry. While following the skill, your assistant sends data to two kinds of places, and only when you ask:
+
+- **A website you name**, when you ask it to check a live site: ordinary page requests, the same as visiting it.
+- **Google PageSpeed Insights**, when you ask for a speed check: the URL you name.
 
 ## Source, issues and contributions
 
