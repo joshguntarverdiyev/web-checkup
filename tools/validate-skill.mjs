@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 // Validates every skill in skills/ against the Agent Skills spec (agentskills.io/specification)
 // plus repo conventions: relative links resolve, plugin and marketplace names agree, scripts parse.
+// Usage: node tools/validate-skill.mjs [root]   (default: this repository)
 
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const root = path.resolve(process.argv[2] ?? path.join(path.dirname(fileURLToPath(import.meta.url)), ".."));
 const errors = [];
 const warnings = [];
 const err = (m) => errors.push(m);
@@ -95,13 +96,15 @@ try {
   if (!entry) err("marketplace.json: no plugin entry with source ./");
   else if (entry.name !== plugin.name) err(`marketplace entry name "${entry.name}" differs from plugin.json name "${plugin.name}"`);
   if (!market.owner || !market.owner.name) err("marketplace.json: owner.name is required");
-  // one version everywhere, matching the newest CHANGELOG entry
-  const changelog = fs.readFileSync(path.join(root, "CHANGELOG.md"), "utf8");
-  const latest = (changelog.match(/^##\s+(\d+\.\d+\.\d+)/m) || [])[1];
-  const pkgVersion = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")).version;
-  const skillVersion = (fs.readFileSync(path.join(root, "skills", plugin.name, "SKILL.md"), "utf8").match(/^\s+version:\s*"?([\d.]+)"?/m) || [])[1];
+  // one version everywhere, matching the newest CHANGELOG entry (the directory edition has
+  // no CHANGELOG.md or package.json, so those two are checked only where they exist)
+  const has = (f) => fs.existsSync(path.join(root, f));
+  const versions = [];
+  if (has("CHANGELOG.md")) versions.push(["CHANGELOG.md", (fs.readFileSync(path.join(root, "CHANGELOG.md"), "utf8").match(/^##\s+(\d+\.\d+\.\d+)/m) || [])[1]]);
+  if (has("package.json")) versions.push(["package.json", JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")).version]);
+  versions.push(["SKILL.md metadata", (fs.readFileSync(path.join(root, "skills", plugin.name, "SKILL.md"), "utf8").match(/^\s+version:\s*"?([\d.]+)"?/m) || [])[1]]);
   if (!plugin.version) err("plugin.json: version is required (users only receive releases when it changes)");
-  for (const [label, v] of [["CHANGELOG.md", latest], ["package.json", pkgVersion], ["SKILL.md metadata", skillVersion]]) {
+  for (const [label, v] of versions) {
     if (v !== plugin.version) err(`version mismatch: plugin.json ${plugin.version} vs ${label} ${v}`);
   }
 } catch (e) { err(`manifest error: ${e.message}`); }

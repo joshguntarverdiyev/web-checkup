@@ -5,3 +5,4 @@ web-checkup-shots-*/
 .env
 .env.*
 !.env.example
+dist/

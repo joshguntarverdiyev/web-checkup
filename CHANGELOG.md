@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.6 (2026-11-07)
+
+- A script-free edition for Anthropic's Claude plugin directory, which accepts scripts only from Verified organizations. `npm run build:directory` builds it from this repository into `dist/directory-edition`: the same skill without the three scripts, with each script step replaced by how to do the check with the agent's own tools. It is published from a separate repository, joshguntarverdiyev/web-checkup-directory.
+- This repository, its scripts and its install methods are unchanged.
+
 ## 1.0.5 (2026-10-12)
 
 - Privacy policy (`PRIVACY.md`), linked from `plugin.json` and the README.
